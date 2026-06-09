@@ -93,32 +93,32 @@
                         <div class="hint-text"><span>answers:0</span> unanswered questions</div>
                         <div class="hint-text"><span> score:3  </span> posts with a 3+ score</div>
                     </div>
-                </div>
-                <div class="search-hint-footer">
-                    <a href="#" class="btn">Ask a question</a>
-                    <a href="#" class="search-help">Search help</a>
+               <div class="search-hint-footer">
+                    <a href="" class="search-help">Search help</a>
                 </div>
             </div>
 
         </div>
-        <div class="nav-right-buttons">
-            <div class="search-btn">
-                <i class="fas fa-search"></i>
-            </div>
-          {% if user.is_authenticated %}
-    <a href="{% url 'profile' %}" class="btn btn-login">Profile</a>
+     <div class="nav-right-buttons">
+    <div class="search-btn">
+        <i class="fas fa-search"></i>
+    </div>
+    
+    <a href="{% url 'stackbase:question-create' %}" class="btn btn-login" style="background-color: #0095ff; color: white; border: none;">Ask Question</a>
 
-    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-register">
-            Logout
-        </button>
-    </form>
-{% else %}
-    <a href="{% url 'login' %}" class="btn btn-login">Log in</a>
-    <a href="{% url 'register' %}" class="btn btn-register">Sign up</a>
-{% endif %}
-        </div>
+    {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="btn btn-login">Profile</a>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-register">
+                Logout
+            </button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-login">Log in</a>
+        <a href="{% url 'register' %}" class="btn btn-register">Sign up</a>
+    {% endif %}
+</div>
     </nav>
 </div>
 <!-- <h1 style="font-size: 20px;">hello</h1> -->

@@ -8,5 +8,9 @@ urlpatterns = [
     path('about/' , views.about , name='about'),
 
     #CRUD functionnality
-    path('questions/' , views.QuestionListView.as_view() , name='question-list')
+    path('questions/' , views.QuestionListView.as_view() , name='question-list'),
+    path('questions/<int:pk>/' , views.QuestionDetailView.as_view() , name='question-detail'),
+    path('questions/new/' , views.QuestionCreateView.as_view() , name='question-create'),
+    path('questions/<int:pk>/update/' , views.QuestionUpdateView.as_view() , name='question-update'),
+    path('questions/<int:pk>/delete/' , views.QuestionDeleteview.as_view() , name='question-delete'),
 ]
