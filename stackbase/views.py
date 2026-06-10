@@ -25,7 +25,7 @@ class QuestionDetailView(DetailView):
     context_object_name = 'question'
 
 
-class QuestionCreateView(CreateView):
+class QuestionCreateView(LoginRequiredMixin , CreateView):
     model = Question
     template_name = 'stackbase/question_form.html'
     fields = ['title' , 'description']
@@ -38,7 +38,7 @@ class QuestionCreateView(CreateView):
         return super().form_valid(form)
 
 
-class QuestionUpdateView(UserPassesTestMixin , UpdateView):
+class QuestionUpdateView(UserPassesTestMixin , LoginRequiredMixin ,  UpdateView):
     model = Question
     template_name = 'stackbase/question_form.html'
     fields = ['title' , 'description']
