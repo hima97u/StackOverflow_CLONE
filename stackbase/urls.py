@@ -14,4 +14,5 @@ urlpatterns = [
     path('questions/<int:pk>/update/' , views.QuestionUpdateView.as_view() , name='question-update'),
     path('questions/<int:pk>/delete/' , views.QuestionDeleteview.as_view() , name='question-delete'),
     path('questions/<int:pk>/comment/' , views.AddCommentView.as_view() , name='question-comment'),
+    path('like/<int:pk>/' , views.like_view , name='like-post'),
 ]

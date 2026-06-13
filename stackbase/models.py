@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    likes = models.ManyToManyField(User, related_name='question_posts')
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -16,6 +17,10 @@ class Question(models.Model):
 
     def get_absolute_url(self):
      return reverse('stackbase:question-detail', kwargs={'pk': self.pk})
+    
+    # function for counting the total likes of a question
+    def total_likes(self):
+        return self.likes.count()
     
 
 class Comment(models.Model):

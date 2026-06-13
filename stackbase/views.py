@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from . models import Question , Comment
 from django.views.generic import ListView , DetailView , CreateView , UpdateView , DeleteView
 from django.contrib.auth.mixins import UserPassesTestMixin , LoginRequiredMixin
 from . models import Question , Comment
@@ -14,6 +17,19 @@ def about(request):
 
 #CRUD functionnality 
 
+def like_view(request , pk):
+    post = get_object_or_404(Question , id=request.POST.get('question_id'))
+    liked  = False
+
+    if post.likes.filter(id=request.user.id).exists(): # if the user has already liked the post then remove the like otherwise add the like
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    return HttpResponseRedirect(reverse('stackbase:question-detail' , args=[str(pk)]))
+
 class QuestionListView(ListView):
     model = Question
     template_name = 'stackbase/question_list.html'
@@ -25,6 +41,29 @@ class QuestionDetailView(DetailView):
     model = Question
     template_name = 'stackbase/question_detail.html'
     context_object_name = 'question'
+
+    # this is for to show the total likes of a question in the question detail page
+    def get_context_data(self, *args , **kwargs):
+        context = super(QuestionDetailView , self).get_context_data(*args , **kwargs)
+        question = get_object_or_404(Question , id=self.kwargs['pk'])
+
+        # # debugging
+        # print("User:", self.request.user)
+        # print("User ID:", self.request.user.id)
+        # print("Likes:", list(question.likes.all()))
+        # print("Liked:", question.likes.filter(id=self.request.user.id).exists())
+
+
+        total_likes = question.total_likes()
+        liked = False
+        if question.likes.filter(id=self.request.user.id).exists(): # if the user has already liked the post then show the liked button otherwise show the like button
+            liked = True
+        context["total_likes"] = total_likes
+        context["liked"] = liked
+        return context
+
+
+
 
 
 class QuestionCreateView(LoginRequiredMixin , CreateView):
